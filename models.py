@@ -157,3 +157,6 @@ class User(Model):
     def validate_register(self):
         return len(self.username) > 2 and len(self.password) > 2
 
+    @staticmethod
+    def guest():
+        return '【游客】'
