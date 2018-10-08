@@ -52,6 +52,18 @@ class Model(object):
         return m
 
     @classmethod
+    def delete(cls, id):
+        ms = cls.all()
+        for i, m in enumerate(ms):
+            if m.id == id:
+                del ms[i]
+                break
+
+        l = [m.__dict__ for m in ms]
+        path = cls.db_path()
+        save(l, path)
+
+    @classmethod
     def all(cls):
         """
         all 方法使用 load 函数得到所有的 models

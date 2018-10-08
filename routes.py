@@ -124,14 +124,15 @@ def route_register(request):
     return r.encode()
 
 
-def error(code=404):
+def error(request, code=404):
     """
     根据 code 返回不同的错误响应
     目前只有 404
     """
     e = {
-        404: b'HTTP/1.1 404 NOT FOUND\r\n\r\n<h1>NOT FOUND</h1>',
+        404: b'HTTP/1.x 404 NOT FOUND\r\n\r\n<h1>NOT FOUND</h1>',
     }
+    log('Error Page!! should return 404 not found')
     return e.get(code, b'')
 
 

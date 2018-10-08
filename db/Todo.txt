@@ -1,16 +1,1 @@
-[
-  {
-    "id": 1,
-    "title": "updatetest add",
-    "user_id": 2,
-    "created_time": 1538997929,
-    "updated_time": 1539001208
-  },
-  {
-    "id": 2,
-    "title": "updatetest add todo 2",
-    "user_id": 2,
-    "created_time": 1539000802,
-    "updated_time": 1539001020
-  }
-]
+[]

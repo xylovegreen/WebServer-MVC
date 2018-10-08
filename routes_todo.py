@@ -69,6 +69,12 @@ def add(request):
     return redirect('/todo')
 
 
+def delete(request):
+    todo_id = int(request.query['id'])
+    Todo.delete(todo_id)
+    return redirect('/todo')
+
+
 def edit(request):
     todo_id = int(request.query['id'])
     t = Todo.find_by(id=todo_id)
@@ -109,5 +115,6 @@ def route_dict():
         '/todo/add': add,
         '/todo/edit': edit,
         '/todo/update': update,
+        '/todo/delete': delete,
     }
     return d
