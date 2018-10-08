@@ -69,6 +69,23 @@ def add(request):
     return redirect('/todo')
 
 
+def edit(request):
+    todo_id = int(request.query['id'])
+    t = Todo.find_by(id=todo_id)
+    u = current_user(request)
+    if u.id == t.user_id:
+        body = template('todo_edit.html')
+        body = body.replace('{{todo_id}}', str(todo_id))
+        body = body.replace('{{todo_title}}', t.title)
+
+    headers = {
+        'Content-Type': 'text/html',
+    }
+    header = response_with_headers(headers)
+    r = header + '\r\n' + body
+    return r.encode()
+
+
 def route_dict():
     """
     todo的路由字典
@@ -76,5 +93,6 @@ def route_dict():
     d = {
         '/todo': index,
         '/todo/add': add,
+        '/todo/edit': edit,
     }
     return d

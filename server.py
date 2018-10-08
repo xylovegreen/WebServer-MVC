@@ -98,15 +98,15 @@ def response_for_path(request):
 
 
 def process_request(connection):
-    r = connection.recv(1024)
-    log('request: \n{}'.format(r.decode()))
+    with connection:
+        r = connection.recv(1024)
+        log('request: \n{}'.format(r.decode()))
 
-    raw_data = r.decode()
-    request = Request(raw_data)
-    response = response_for_path(request)
+        raw_data = r.decode()
+        request = Request(raw_data)
+        response = response_for_path(request)
 
-    connection.sendall(response)
-    connection.close()
+        connection.sendall(response)
 
 
 def run(host='127.0.0.1', port=3000):
