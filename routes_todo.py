@@ -86,6 +86,20 @@ def edit(request):
     return r.encode()
 
 
+def update(request):
+    """
+    用于增加新 todo 的路由函数
+    """
+    form = request.form()
+    t = Todo.find_by(id=int(form['id']))
+    u = current_user(request)
+
+    if u.id == t.user_id:
+        Todo.update(form)
+
+    return redirect('/todo')
+
+
 def route_dict():
     """
     todo的路由字典
@@ -94,5 +108,6 @@ def route_dict():
         '/todo': index,
         '/todo/add': add,
         '/todo/edit': edit,
+        '/todo/update': update,
     }
     return d
