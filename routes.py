@@ -23,7 +23,7 @@ def current_user(request):
         else:
             user_id = s.user_id
             u = User.find_by(id=user_id)
-            return u.username
+            return u
     return User.guest()
 
 
@@ -69,7 +69,7 @@ def route_login(request):
     }
     log('login, headers', request.headers)
     log('login, cookies', request.cookies)
-    username = current_user(request)
+    u = current_user(request)
     if request.method == 'POST':
         form = request.form()
         user_login = User.login_user(form)
@@ -96,7 +96,7 @@ def route_login(request):
         result = ''
     body = template('login.html')
     body = body.replace('{{result}}', result)
-    body = body.replace('{{username}}', username)
+    body = body.replace('{{username}}', u.username)
     # 1. 写入 headers
     # 2. 包装成 header
     # 3. format header, body
@@ -122,6 +122,17 @@ def route_register(request):
     header = 'HTTP/1.1 233 SUPER OK\r\nContent-Type: text/html\r\n'
     r = header + '\r\n' + body
     return r.encode()
+
+
+def error(code=404):
+    """
+    根据 code 返回不同的错误响应
+    目前只有 404
+    """
+    e = {
+        404: b'HTTP/1.1 404 NOT FOUND\r\n\r\n<h1>NOT FOUND</h1>',
+    }
+    return e.get(code, b'')
 
 
 def route_dict():

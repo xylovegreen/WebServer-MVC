@@ -4,6 +4,8 @@ import urllib.parse
 from utils import log
 
 from routes import route_dict
+from routes import error
+from routes_todo import route_dict as routes_todo
 
 
 class Request(object):
@@ -81,17 +83,6 @@ class Request(object):
             self.query = query
 
 
-def error(code=404):
-    """
-    根据 code 返回不同的错误响应
-    目前只有 404
-    """
-    e = {
-        404: b'HTTP/1.1 404 NOT FOUND\r\n\r\n<h1>NOT FOUND</h1>',
-    }
-    return e.get(code, b'')
-
-
 def response_for_path(request):
     """
     根据 path 调用相应的处理函数
@@ -99,8 +90,10 @@ def response_for_path(request):
     """
     r = {}
     r.update(route_dict())
+    r.update(routes_todo())
 
     response = r.get(request.path, error)
+
     return response(request)
 
 

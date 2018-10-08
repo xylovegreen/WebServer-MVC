@@ -32,4 +32,8 @@ class User(Model):
 
     @staticmethod
     def guest():
-        return '【游客】'
+        form = dict(
+            username='【游客】',
+        )
+        u = User(form)
+        return u
