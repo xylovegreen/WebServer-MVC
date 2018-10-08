@@ -28,5 +28,11 @@
     "session_id": "kkjsjdkdjkfadnsf",
     "user_id": 2,
     "expired_time": 1539003159.5145628
+  },
+  {
+    "id": 6,
+    "session_id": "fjfjdjsadnsjjdja",
+    "user_id": 3,
+    "expired_time": 1539006241.621588
   }
 ]

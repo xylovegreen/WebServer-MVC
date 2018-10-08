@@ -71,7 +71,11 @@ def add(request):
 
 def delete(request):
     todo_id = int(request.query['id'])
-    Todo.delete(todo_id)
+    t = Todo.find_by(id=todo_id)
+    u = current_user(request)
+    if u.id == t.user_id:
+        todo_id = int(request.query['id'])
+        Todo.delete(todo_id)
     return redirect('/todo')
 
 
@@ -84,12 +88,14 @@ def edit(request):
         body = body.replace('{{todo_id}}', str(todo_id))
         body = body.replace('{{todo_title}}', t.title)
 
-    headers = {
-        'Content-Type': 'text/html',
-    }
-    header = response_with_headers(headers)
-    r = header + '\r\n' + body
-    return r.encode()
+        headers = {
+            'Content-Type': 'text/html',
+        }
+        header = response_with_headers(headers)
+        r = header + '\r\n' + body
+        return r.encode()
+    else:
+        return redirect('/todo')
 
 
 def update(request):
