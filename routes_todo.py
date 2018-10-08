@@ -3,6 +3,7 @@ from routes import (
     current_user,
     template,
     response_with_headers,
+    redirect,
 )
 from utils import log
 
@@ -51,11 +52,29 @@ def index(request):
     return r.encode()
 
 
+def add(request):
+    """
+    用于增加新 todo 的路由函数
+    """
+    form = request.form()
+    u = current_user(request)
+
+    t = Todo.new(form)
+    t.user_id = u.id
+    t.created_time = int(time.time())
+    t.updated_time = t.created_time
+    t.save()
+    # 浏览器发送数据过来被处理后, 重定向到首页
+    # 浏览器在请求新首页的时候, 就能看到新增的数据了
+    return redirect('/todo')
+
+
 def route_dict():
     """
     todo的路由字典
     """
     d = {
         '/todo': index,
+        '/todo/add': add,
     }
     return d

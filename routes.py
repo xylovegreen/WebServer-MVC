@@ -135,6 +135,18 @@ def error(code=404):
     return e.get(code, b'')
 
 
+def redirect(url):
+    """
+    给浏览器发送 302 跳转页面的响应
+    在 HTTP header 里面添加 Location 字段并指定一个 url
+    """
+    headers = {
+        'Location': url,
+    }
+    r = response_with_headers(headers, 302) + '\r\n'
+    return r.encode()
+
+
 def route_dict():
     d = {
         '/': route_index,
