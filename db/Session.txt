@@ -1,0 +1,20 @@
+[
+  {
+    "id": 1,
+    "session_id": "affsajfskddajdnf",
+    "user_id": 2,
+    "expired_time": 1538982560.5589767
+  },
+  {
+    "id": 2,
+    "session_id": "jjgdfdnjjjjjjjej",
+    "user_id": 3,
+    "expired_time": 1538982600.7665207
+  },
+  {
+    "id": 3,
+    "session_id": "dkkjafdnakadsasa",
+    "user_id": 4,
+    "expired_time": 1538982752.5929577
+  }
+]

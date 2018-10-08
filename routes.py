@@ -1,9 +1,8 @@
 from utils import log
 from models.user import User
+from models.session import Session
 
 import random
-
-session = {}
 
 
 def template(name):
@@ -17,8 +16,15 @@ def template(name):
 
 def current_user(request):
     session_id = request.cookies.get('session_id', '')
-    username = session.get(session_id, User.guest())
-    return username
+    if session_id is not None:
+        s = Session.find_by(session_id=session_id)
+        if s is None or s.expired():
+            return User.guest()
+        else:
+            user_id = s.user_id
+            u = User.find_by(id=user_id)
+            return u.username
+    return User.guest()
 
 
 def random_string():
@@ -66,13 +72,18 @@ def route_login(request):
     username = current_user(request)
     if request.method == 'POST':
         form = request.form()
-        u = User.new(form)
-        if u.validate_login():
+        user_login = User.login_user(form)
+        if user_login is not None:
             # 把 session-id 存入 cookie 中
             # 设置一个随机字符串来当 session_id 使用
             # 先用一个全局变量的字典 session 保存 session_id 和 username 的对应关系
             session_id = random_string()
-            session[session_id] = u.username
+            form = dict(
+                session_id=session_id,
+                user_id=user_login.id,
+            )
+            s = Session.new(form)
+            s.save()
             # 在 header 中添加 Set-Cookie 字段
             # 告诉浏览器 下次访问的时候 带上 这个 cookie 服务器会验证其身份
             headers['Set-Cookie'] = 'session_id={}'.format(session_id)

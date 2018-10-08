@@ -42,7 +42,7 @@ class Model(object):
         """
         # 得到 谁调用的 类的名字，用它给存储文件命名
         classname = cls.__name__
-        path = '{}.txt'.format(classname)
+        path = 'db/{}.txt'.format(classname)
         return path
 
     @classmethod

@@ -25,6 +25,11 @@ class User(Model):
     def validate_register(self):
         return len(self.username) > 2 and len(self.password) > 2
 
+    @classmethod
+    def login_user(cls, form):
+        u = User.find_by(username=form['username'], password=form['password'])
+        return u
+
     @staticmethod
     def guest():
         return '【游客】'
