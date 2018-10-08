@@ -4,6 +4,7 @@ from routes import (
     template,
     response_with_headers,
     redirect,
+    login_required,
 )
 from utils import log
 
@@ -118,9 +119,9 @@ def route_dict():
     """
     d = {
         '/todo': index,
-        '/todo/add': add,
-        '/todo/edit': edit,
-        '/todo/update': update,
-        '/todo/delete': delete,
+        '/todo/add': login_required(add),
+        '/todo/edit': login_required(edit),
+        '/todo/update': login_required(update),
+        '/todo/delete': login_required(delete),
     }
     return d

@@ -148,6 +148,23 @@ def redirect(url):
     return r.encode()
 
 
+def login_required(route_function):
+    """
+    装饰器
+    用于登陆验证
+    验证需要登陆的操作 在执行相应的路由函数之前执行
+    """
+    def f(request):
+        u = current_user(request)
+        if u.username == User.guest().username:
+            log('游客用户')
+            return redirect('/login')
+        else:
+            return route_function(request)
+
+    return f
+
+
 def route_dict():
     d = {
         '/': route_index,
