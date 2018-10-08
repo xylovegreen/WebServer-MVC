@@ -1,0 +1,30 @@
+from models import Model
+from utils import log
+
+
+class User(Model):
+    """
+    User 是保存用户数据的 model
+    继承了 Model
+    从而继承 Model 的 save 和 new 方法
+    """
+    def __init__(self, form):
+        super().__init__(form)
+        self.username = form.get('username', '')
+        self.password = form.get('password', '')
+
+    def validate_login(self):
+        users = User.all()
+        log('all users in validation login', users)
+        for user in users:
+            if user.username == self.username:
+                if user.password == self.password:
+                    return True
+        return False
+
+    def validate_register(self):
+        return len(self.username) > 2 and len(self.password) > 2
+
+    @staticmethod
+    def guest():
+        return '【游客】'
