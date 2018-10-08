@@ -72,31 +72,23 @@ def add(request):
 
 def delete(request):
     todo_id = int(request.query['id'])
-    t = Todo.find_by(id=todo_id)
-    u = current_user(request)
-    if u.id == t.user_id:
-        todo_id = int(request.query['id'])
-        Todo.delete(todo_id)
+    Todo.delete(todo_id)
     return redirect('/todo')
 
 
 def edit(request):
     todo_id = int(request.query['id'])
     t = Todo.find_by(id=todo_id)
-    u = current_user(request)
-    if u.id == t.user_id:
-        body = template('todo_edit.html')
-        body = body.replace('{{todo_id}}', str(todo_id))
-        body = body.replace('{{todo_title}}', t.title)
+    body = template('todo_edit.html')
+    body = body.replace('{{todo_id}}', str(todo_id))
+    body = body.replace('{{todo_title}}', t.title)
 
-        headers = {
-            'Content-Type': 'text/html',
-        }
-        header = response_with_headers(headers)
-        r = header + '\r\n' + body
-        return r.encode()
-    else:
-        return redirect('/todo')
+    headers = {
+        'Content-Type': 'text/html',
+    }
+    header = response_with_headers(headers)
+    r = header + '\r\n' + body
+    return r.encode()
 
 
 def update(request):
@@ -104,13 +96,32 @@ def update(request):
     用于增加新 todo 的路由函数
     """
     form = request.form()
-    t = Todo.find_by(id=int(form['id']))
-    u = current_user(request)
 
-    if u.id == t.user_id:
-        Todo.update(form)
+    Todo.update(form)
 
     return redirect('/todo')
+
+
+def same_user_required(route_function):
+    """
+    装饰器
+    验证登陆和操作是否是同一用户
+    """
+
+    def f(request):
+        u = current_user(request)
+        if request.method == 'POST':
+            form = request.form()
+            t = Todo.find_by(id=int(form['id']))
+        elif request.method == 'GET':
+            todo_id = int(request.query['id'])
+            t = Todo.find_by(id=todo_id)
+        if u.id == t.user_id:
+            return route_function(request)
+        else:
+            return redirect('/todo')
+
+    return f
 
 
 def route_dict():
@@ -118,10 +129,10 @@ def route_dict():
     todo的路由字典
     """
     d = {
-        '/todo': index,
+        '/todo': login_required(index),
         '/todo/add': login_required(add),
-        '/todo/edit': login_required(edit),
-        '/todo/update': login_required(update),
-        '/todo/delete': login_required(delete),
+        '/todo/edit': login_required(same_user_required(edit)),
+        '/todo/update': login_required(same_user_required(update)),
+        '/todo/delete': login_required(same_user_required(delete)),
     }
     return d
