@@ -43,6 +43,7 @@ class Request(object):
 
         if 'Cookie' in self.headers:
             cookies = self.headers['Cookie']
+            log('cookie in add_header', cookies)
             k, v = cookies.split('=')
             self.cookies[k] = v
 
@@ -115,6 +116,7 @@ def run(host='127.0.0.1', port=3000):
     """
     # 初始化 socket
     # 使用 with 保证程序中断时能正确关闭 socket 释放占用端口
+    log('开始运行于', '{}:{}'.format(host, port))
     with socket.socket() as s:
         # 绑定
         s.bind((host, port))
