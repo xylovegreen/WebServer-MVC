@@ -43,3 +43,9 @@ class User(Model):
 
     def is_admin(self):
         return self.role == UserRole.admin
+
+    @classmethod
+    def update(cls, form):
+        u = User.find_by(id=int(form['id']))
+        u.password = form['password']
+        u.save()

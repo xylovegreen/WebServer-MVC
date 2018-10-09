@@ -2,7 +2,7 @@
   {
     "id": 1,
     "username": "xylov1",
-    "password": "123",
+    "password": "321",
     "role": {
       "__enum": "admin"
     }
@@ -10,7 +10,7 @@
   {
     "id": 2,
     "username": "xylov2",
-    "password": "123",
+    "password": "321",
     "role": {
       "__enum": "normal"
     }

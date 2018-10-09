@@ -6,6 +6,12 @@
 </head>
 <body>
     <h1>Users</h1>
+    <form action="/admin/users/update" method="post">
+    <input name="id" placeholder="id">
+    <input name="password" placeholder="password">
+    <br>
+    <button type="submit">提交修改</button>
+    </form>
     <div>{{users}}</div>
 </body>
 </html>

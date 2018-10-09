@@ -197,11 +197,24 @@ def users(request):
         return redirect('/login')
 
 
+def update(request):
+    form = request.form()
+    t = User.find_by(id=int(form['id']))
+    u = current_user(request)
+    if u.is_admin():
+        User.update(form)
+    else:
+        return redirect('/login')
+
+    return redirect('/admin/users')
+
+
 def route_dict():
     d = {
         '/': route_index,
         '/login': route_login,
         '/register': route_register,
         '/admin/users': users,
+        '/admin/users/update': update,
     }
     return d
