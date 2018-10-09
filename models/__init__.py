@@ -1,7 +1,10 @@
 import json
 
 from utils import log
-
+from models.user_role import (
+    UserRoleEncoder,
+    userrole_decode
+)
 
 def save(data, path):
     """
@@ -12,7 +15,7 @@ def save(data, path):
     # json.dumps() 将要写入的 dict/list 转化成 str
     # indent 是缩进
     # ensure_ascii=False 用于保存中文
-    s = json.dumps(data, indent=2, ensure_ascii=False)
+    s = json.dumps(data, indent=2, ensure_ascii=False, cls=UserRoleEncoder)
     with open(path, 'w+', encoding='utf-8') as f:
         log('save', path, s, data)
         f.write(s)
@@ -27,7 +30,7 @@ def load(path):
     with open(path, 'r', encoding='utf-8') as f:
         s = f.read()
         log('load', s)
-        return json.loads(s)
+        return json.loads(s, object_hook=userrole_decode)
 
 
 class Model(object):

@@ -2,31 +2,57 @@
   {
     "id": 1,
     "username": "xylov1",
-    "password": "123456"
+    "password": "123456",
+    "role": {
+      "__enum": "normal"
+    }
   },
   {
     "id": 2,
     "username": "xylov2",
-    "password": "123"
+    "password": "123",
+    "role": {
+      "__enum": "normal"
+    }
   },
   {
     "id": 3,
     "username": "xylov3",
-    "password": "123"
+    "password": "123",
+    "role": {
+      "__enum": "normal"
+    }
   },
   {
     "id": 4,
     "username": "xylov4",
-    "password": "123"
+    "password": "123",
+    "role": {
+      "__enum": "normal"
+    }
   },
   {
     "id": 5,
     "username": "blablatest",
-    "password": "123"
+    "password": "123",
+    "role": {
+      "__enum": "normal"
+    }
   },
   {
     "id": 6,
     "username": "blablabla",
-    "password": "123"
+    "password": "123",
+    "role": {
+      "__enum": "normal"
+    }
+  },
+  {
+    "id": 7,
+    "username": "xxx",
+    "password": "123",
+    "role": {
+      "__enum": "normal"
+    }
   }
 ]

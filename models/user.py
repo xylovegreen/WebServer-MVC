@@ -1,5 +1,6 @@
 from models import Model
 from utils import log
+from models.user_role import UserRole
 
 
 class User(Model):
@@ -12,6 +13,7 @@ class User(Model):
         super().__init__(form)
         self.username = form.get('username', '')
         self.password = form.get('password', '')
+        self.role = form.get('role', UserRole.normal)
 
     def validate_login(self):
         users = User.all()
@@ -33,6 +35,7 @@ class User(Model):
     @staticmethod
     def guest():
         form = dict(
+            role=UserRole.guest,
             username='【游客】',
         )
         u = User(form)
