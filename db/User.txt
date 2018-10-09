@@ -70,5 +70,13 @@
     "role": {
       "__enum": "normal"
     }
+  },
+  {
+    "id": 10,
+    "username": "hiahiahia",
+    "password": "123",
+    "role": {
+      "__enum": "normal"
+    }
   }
 ]

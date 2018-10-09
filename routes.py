@@ -57,8 +57,10 @@ def route_index(request):
     """
     主页的处理函数, 返回主页的响应
     """
+    u = current_user(request)
     header = 'HTTP/1.1 233 SUPER OK\r\nContent-Type: text/html\r\n'
     body = template('index.html')
+    body = body.replace('{{username}}', u.username)
     r = header + '\r\n' + body
     return r.encode()
 
@@ -87,7 +89,7 @@ def route_login(request):
             # 在 header 中添加 Set-Cookie 字段
             # 告诉浏览器 下次访问的时候 带上 这个 cookie 服务器会验证其身份
             headers['Set-Cookie'] = 'session_id={}'.format(session_id)
-            headers['location'] = '/login'
+            headers['location'] = '/'
             header = response_with_headers(headers, '302')
             return header.encode()
         else:
@@ -209,6 +211,18 @@ def update(request):
     return redirect('/admin/users')
 
 
+def route_static(request):
+    """
+    静态资源的处理函数, 读取图片并生成响应返回
+    """
+    filename = request.query.get('file', 'doge.gif')
+    path = 'static/' + filename
+    with open(path, 'rb') as f:
+        header = b'HTTP/1.x 233 SUPER OK\r\nContent-Type: image/gif\r\n\r\n'
+        img = header + f.read()
+        return img
+
+
 def route_dict():
     d = {
         '/': route_index,
@@ -216,5 +230,6 @@ def route_dict():
         '/register': route_register,
         '/admin/users': users,
         '/admin/users/update': update,
+        '/static': route_static,
     }
     return d
