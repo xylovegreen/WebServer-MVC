@@ -165,10 +165,43 @@ def login_required(route_function):
     return f
 
 
+def users(request):
+    """
+    用户管理 页面
+    只有 admin 可以访问
+    """
+    u = current_user(request)
+    if u.is_admin():
+        user_list = User.find_all()
+        user_html = """
+        <h3>
+            id: {} username: {} password: {} 
+        </h3>
+        """
+        user_html = ''.join([
+            user_html.format(
+                u.id, u.username, u.password,
+            ) for u in user_list
+        ])
+
+        body = template('admin_users.html')
+        body = body.replace('{{users}}', user_html)
+
+        headers = {
+            'Content-Type': 'text/html',
+        }
+        header = response_with_headers(headers)
+        r = header + '\r\n' + body
+        return r.encode()
+    else:
+        return redirect('/login')
+
+
 def route_dict():
     d = {
         '/': route_index,
         '/login': route_login,
         '/register': route_register,
+        '/admin/users': users,
     }
     return d

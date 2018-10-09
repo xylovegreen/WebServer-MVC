@@ -40,3 +40,6 @@ class User(Model):
         )
         u = User(form)
         return u
+
+    def is_admin(self):
+        return self.role == UserRole.admin
