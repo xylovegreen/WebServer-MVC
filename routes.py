@@ -156,7 +156,7 @@ def login_required(route_function):
     """
     def f(request):
         u = current_user(request)
-        if u.username == User.guest().username:
+        if u.is_guest():
             log('游客用户')
             return redirect('/login')
         else:

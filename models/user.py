@@ -44,6 +44,9 @@ class User(Model):
     def is_admin(self):
         return self.role == UserRole.admin
 
+    def is_guest(self):
+        return self.role == UserRole.guest
+
     @classmethod
     def update(cls, form):
         u = User.find_by(id=int(form['id']))
