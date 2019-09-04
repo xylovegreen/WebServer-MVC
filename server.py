@@ -44,8 +44,11 @@ class Request(object):
         if 'Cookie' in self.headers:
             cookies = self.headers['Cookie']
             log('cookie in add_header', cookies)
-            k, v = cookies.split('=')
-            self.cookies[k] = v
+
+            cookie_list = cookies.split('; ')
+            for cookie in cookie_list:
+                k, v = cookie.split('=')
+                self.cookies[k] = v
 
     def form(self):
         body = urllib.parse.unquote_plus(self.body)
@@ -104,10 +107,14 @@ def process_request(connection):
         log('request: \n{}'.format(r.decode()))
 
         raw_data = r.decode()
-        request = Request(raw_data)
-        response = response_for_path(request)
 
-        connection.sendall(response)
+        parts = raw_data.split()
+        if len(parts) > 0:
+            request = Request(raw_data)
+            response = response_for_path(request)
+            connection.sendall(response)
+        else:
+            log("接收到了一个空请求")
 
 
 def run(host='127.0.0.1', port=3000):
