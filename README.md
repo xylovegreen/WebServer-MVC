@@ -1,6 +1,9 @@
 ## WebServer-MVC
 基于 Socket 和 HTTP 协议编写的 Web MVC 框架，并实现一个 TodoList 功能的应用。
 
+## 效果图
+![](WebServer-MVC.gif)
+
 ## 实现功能
 - user 登录 和 注册
 - todo 增删改查(CRUD)
